@@ -462,7 +462,11 @@
 
             #scoreboard {
             position: absolute;
-            top: -30px !important;
+            top: -25px !important;
+            }
+
+            .joystick-slider {
+            margin-top: 30px !important;
             }
         }
     </style>
@@ -1968,7 +1972,7 @@
                 document.getElementById('winScreen').style.display = 'none';
                 document.getElementById('gamePaused').style.display = 'none';
                 document.getElementById('stats').style.display = 'none';
-            }
+            } else {isMobileDevice();}
             return window.matchMedia("(orientation: landscape)").matches;
         }
 
