@@ -436,10 +436,10 @@
 
         @media (max-width: 768px) and (orientation: landscape) {
             #canvas-container {
-                width: 60vw;
+                width: 55vw;
                 margin-right: 30vw;
                 right: 3%;
-                margin-top: 5vw;
+                margin-top: 10vw;
             }
 
             #joystick-container {
@@ -453,7 +453,7 @@
     <!-- https://drive.google.com/file/d/1gl9NtrL6Am2LFeRv7gIqE_TBgarl2OR4/view?usp=sharing -->
 <body>
     <div class="container"> 
-        <div class="game-title"><a href="https://docs.google.com/document/d/1qBPB0o5j4DLpiHqMHwt4F7pj802QFePzVUUoAW31chw/edit?usp=sharing" target=”_blank”>Infection</a></div> 
+        <div class="game-title"><a id="title" href="https://docs.google.com/document/d/1qBPB0o5j4DLpiHqMHwt4F7pj802QFePzVUUoAW31chw/edit?usp=sharing" target=”_blank”>Infection</a></div> 
         <div id="canvas-container">
             <div id="scoreboard">
                 <div id="score"></div>
@@ -1870,6 +1870,7 @@
         }
 
         if (isMobileDevice()) {
+            document.getElementById('title').href = 'https://drive.google.com/file/d/1gl9NtrL6Am2LFeRv7gIqE_TBgarl2OR4/view?usp=sharing';
             joystickContainer.style.display = 'block';
             document.getElementById('gameOver').style.display = 'block';
             document.getElementById('winScreen').style.display = 'block';
