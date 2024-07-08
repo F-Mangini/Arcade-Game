@@ -436,7 +436,7 @@
 
         @media (max-width: 768px) and (orientation: landscape) {
             #canvas-container {
-                width: 55vw;
+                width: 50vw;
                 margin-right: 30vw;
                 right: 3%;
                 margin-top: 10vw;
@@ -445,7 +445,7 @@
             #joystick-container {
                 position: fixed;
                 left : 75%;
-                bottom: 30%;
+                top: 35%;
             }
         }
     </style>
@@ -1938,6 +1938,20 @@
 
         // LANDSCAPE MODE
         function isLandscape() {
+            if (window.matchMedia("(orientation: landscape)").matches) {
+                document.getElementById('gameOver').style.display = 'block';
+                document.getElementById('winScreen').style.display = 'block';
+                document.getElementById('gamePaused').style.display = 'block';
+                document.getElementById('stats').style.display = 'block';
+                document.getElementById('gameOver').style.top = '30%';
+                document.getElementById('winScreen').style.top = '30%';
+                document.getElementById('gamePaused').style.top = '30%';
+                document.getElementById('stats').style.top = '30%';
+                document.getElementById('gameOver').style.display = 'none';
+                document.getElementById('winScreen').style.display = 'none';
+                document.getElementById('gamePaused').style.display = 'none';
+                document.getElementById('stats').style.display = 'none';
+            }
             return window.matchMedia("(orientation: landscape)").matches;
         }
 
