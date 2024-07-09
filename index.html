@@ -349,7 +349,6 @@
 
             #gameOver, #winScreen, #gamePaused, #stats {
                 top: 28%;
-                padding: 7px;
             }
         }
 
@@ -357,7 +356,6 @@
 
             #gameOver, #winScreen, #gamePaused, #stats {
                 top: 24%;
-                padding: 7px;
             }
         }
 
@@ -462,16 +460,42 @@
 
             #scoreboard {
             position: absolute;
-            top: -25px !important;
+            top: -22px !important;
             }
 
-            .joystick-slider {
-            margin-top: 30px !important;
+            #stats {
+                font-size: 5.5vh !important;
             }
+
+            #gameOver, #winScreen, #gamePaused, #stats {
+                padding: 8px;
+                font-size: 6.5vh;
+            }
+
+            #goofy1 {
+                font-size: 4.5vh !important;
+            }
+
+            .retryButt, .showStats, #resumeButton {
+                padding: 6vh 7.5vh;
+                font-size: 7.5vh;
+            }
+
+            .close-btn {
+                font-size: 6.5vh;
+            }
+
+            #pauseButton {
+                left: -15%;
+                top: 65%;
+            }
+        }
+
+        .no-scroll {
+            overflow: hidden;
         }
     </style>
 </head>
-    <!-- https://drive.google.com/file/d/1gl9NtrL6Am2LFeRv7gIqE_TBgarl2OR4/view?usp=sharing -->
 <body>
     <div class="container"> 
         <div class="game-title"><a id="title" href="https://docs.google.com/document/d/1qBPB0o5j4DLpiHqMHwt4F7pj802QFePzVUUoAW31chw/edit?usp=sharing" target=”_blank”>Infection</a></div> 
@@ -943,7 +967,7 @@
             gameStarted = true;
             gameTOver = false;
             nextEnemySpawnTime = 0;
-            isLandscape();
+            document.body.classList.add('no-scroll');
             requestAnimationFrame(gameLoop);}
 
         function gameLoop() {
@@ -976,7 +1000,8 @@
                         backgroundMusic.playbackRate = 1;
                         backgroundMusic = menuMusic;
                     }
-                    gamePaused = true;  
+                    document.body.classList.remove('no-scroll');
+                    gamePaused = true;
                 }
             }
             if (gameTOver) {
@@ -1710,6 +1735,7 @@
                         backgroundMusic = matchMusic;}
                     document.getElementById('gamePaused').style.display = 'none';
                     document.getElementById('stats').style.display = 'none';
+                    document.body.classList.add('no-scroll');
                     gamePaused = false;
                 }, 250);
             }
@@ -1729,6 +1755,7 @@
             else {backgroundMusic.volume = 0;
                 backgroundMusic = matchMusic;}
             backgroundMusic.playbackRate = currentPlaybackRate;
+            document.body.classList.add('no-scroll');
             gamePaused = false;
             document.getElementById('gamePaused').style.display = 'none';
         });
@@ -1843,10 +1870,12 @@
                     document.getElementById('pauseButton').style.left = '86%';
                 } else {document.getElementById('pauseButton').style.left = '3%';}
                 if ((this.value - 20) < 35 && isLandscape()) {
-                    document.getElementById('canvas-container').style.right = '-25%';
+                    document.getElementById('canvas-container').style.right = '-15%';
+                    document.getElementById('pauseButton').style.left = '102.5%';
                     
                 } else {if ((this.value - 20) >= 35 && isLandscape()) {
                     document.getElementById('canvas-container').style.right = '3%';
+                    document.getElementById('pauseButton').style.left = '-15%';
                 }}
             }
         });
@@ -1857,28 +1886,43 @@
         }
 
         document.getElementById('pauseButton').addEventListener('click', () => {
-            if (!gameTOver) {
-                if (isSoundEnabled) {
-                    playSoundEffect(menuToggle);
-                }
-                document.getElementById('gamePaused').style.display = 'block';
-                if (isMusicPlaying) {
-                    backgroundMusic.volume = 0.4;
-                    setTimeout(function() {
+            if(!gamePaused) {
+                if (!gameTOver) {
+                    if (isSoundEnabled) {
+                        playSoundEffect(menuToggle);
+                    }
+                    document.getElementById('gamePaused').style.display = 'block';
+                    if (isMusicPlaying) {
+                        backgroundMusic.volume = 0.4;
+                        setTimeout(function() {
+                            backgroundMusic.volume = 0;
+                            backgroundMusic = menuMusic;
+                            backgroundMusic.loop = true;
+                            backgroundMusic.volume = musicVolume;
+                            backgroundMusic.playbackRate = 1;
+                            backgroundMusic.play();}, 240);
+                    }
+                    else {
                         backgroundMusic.volume = 0;
-                        backgroundMusic = menuMusic;
-                        backgroundMusic.loop = true;
-                        backgroundMusic.volume = musicVolume;
                         backgroundMusic.playbackRate = 1;
-                        backgroundMusic.play();}, 240);
+                        backgroundMusic = menuMusic;
+                    }
+                    document.body.classList.remove('no-scroll');
+                    gamePaused = true;
                 }
-                else {
+            } else {
+                playSoundEffect(menuToggle);
+                if (isMusicPlaying) {
                     backgroundMusic.volume = 0;
-                    backgroundMusic.playbackRate = 1;
-                    backgroundMusic = menuMusic;
-                }
-                gamePaused = true;
-            }
+                    backgroundMusic = matchMusic;
+                    backgroundMusic.loop = true;
+                    backgroundMusic.volume = musicVolume;}
+                else {backgroundMusic.volume = 0;
+                    backgroundMusic = matchMusic;}
+                backgroundMusic.playbackRate = currentPlaybackRate;
+                document.body.classList.add('no-scroll');
+                gamePaused = false;
+                document.getElementById('gamePaused').style.display = 'none';}
         });
 
         // MOBILE CONTROLS
@@ -1894,18 +1938,6 @@
         if (isMobileDevice()) {
             document.getElementById('title').href = 'https://drive.google.com/file/d/1gl9NtrL6Am2LFeRv7gIqE_TBgarl2OR4/view?usp=sharing';
             joystickContainer.style.display = 'block';
-            document.getElementById('gameOver').style.display = 'block';
-            document.getElementById('winScreen').style.display = 'block';
-            document.getElementById('gamePaused').style.display = 'block';
-            document.getElementById('stats').style.display = 'block';
-            document.getElementById('gameOver').style.top = '21%';
-            document.getElementById('winScreen').style.top = '21%';
-            document.getElementById('gamePaused').style.top = '21%';
-            document.getElementById('stats').style.top = '21%';
-            document.getElementById('gameOver').style.display = 'none';
-            document.getElementById('winScreen').style.display = 'none';
-            document.getElementById('gamePaused').style.display = 'none';
-            document.getElementById('stats').style.display = 'none';
         }
 
         function handleStart(e) {
@@ -1960,22 +1992,42 @@
 
         // LANDSCAPE MODE
         function isLandscape() {
-            if (window.matchMedia("(orientation: landscape)").matches) {
-                document.getElementById('gameOver').style.display = 'block';
-                document.getElementById('winScreen').style.display = 'block';
-                document.getElementById('gamePaused').style.display = 'block';
-                document.getElementById('stats').style.display = 'block';
-                document.getElementById('gameOver').style.top = '30%';
-                document.getElementById('winScreen').style.top = '30%';
-                document.getElementById('gamePaused').style.top = '30%';
-                document.getElementById('stats').style.top = '30%';
-                document.getElementById('gameOver').style.display = 'none';
-                document.getElementById('winScreen').style.display = 'none';
-                document.getElementById('gamePaused').style.display = 'none';
-                document.getElementById('stats').style.display = 'none';
-            } else {isMobileDevice();}
             return window.matchMedia("(orientation: landscape)").matches;
         }
+
+        function handleOrientationChange() {
+            if (isMobileDevice()) {
+                if (isLandscape()) {
+                    document.getElementById('title').classList.add('landscape');
+                    document.getElementById('title').classList.remove('portrait');
+                    // Additional logic for landscape mode
+                    const elements = ['gameOver', 'winScreen', 'gamePaused', 'stats'];
+                    elements.forEach(element => {
+                        if (document.getElementById(element).style.display === 'block') {document.getElementById(element).style.top = '30%';}
+                        else {document.getElementById(element).style.display = 'block';
+                              document.getElementById(element).style.top = '30%';
+                              document.getElementById(element).style.display = 'none';}
+                    });
+                } else {
+                    document.getElementById('title').classList.add('portrait');
+                    document.getElementById('title').classList.remove('landscape');
+                    // Additional logic for portrait mode
+                    const elements = ['gameOver', 'winScreen', 'gamePaused', 'stats'];
+                    elements.forEach(element => {
+                        if (document.getElementById(element).style.display === 'block') {document.getElementById(element).style.top = '21%';}
+                        else {document.getElementById(element).style.display = 'block';
+                              document.getElementById(element).style.top = '21%';
+                              document.getElementById(element).style.display = 'none';}
+                    });
+                }
+            }
+        }
+
+        handleOrientationChange();
+
+        window.addEventListener("orientationchange", handleOrientationChange);
+
+        window.addEventListener("resize", handleOrientationChange);
 
         document.querySelectorAll('.retryButt').forEach(button => {button.addEventListener('click', () => {
                 player = {
@@ -2005,6 +2057,7 @@
                 lastSizeUpdate = 0;
                 loop = false;
                 playerWon = false;
+                document.body.classList.add('no-scroll');
                 gamePaused = false;
                 gameTOver = true;
                 rings = [];
