@@ -586,9 +586,9 @@
                 <div class="stat-category">
                     <h4>Achievements</h4>
                     <ul>
-                        <li>Statistician: <span id="statistician"></span></li>
+                        <li>Nibbler: <span id="nibbler"></span></li>
                         <li>Pacifist: <span id="pacifist"></span></li>
-                        <li>Back from the Dead: <span id="backFromTheDead"></span></li>
+                        <li>Back from the Dead: <span id="backFromTheDead"></span> <span id="statistician"></span></li>
                         <li>Loops: <span id="loopsCompleted"></span></li>
                     </ul>
                 </div>
@@ -708,6 +708,10 @@
         let hearts_max = 3;
         let statistician = false;
         let pacifist = false;
+        let nibbler  = false;
+        let nibblerPrey = {
+            size: 0,
+            name: 'none'}
         let musicVolume = 1;
         let soundEffectsVolume = 1;
 
@@ -1042,7 +1046,7 @@
                         }
                     });
                 }
-                if (score > 5000 && Math.random() < 0.0010 * deltaTime * Math.sqrt(multiplier)) spawnPowerup();
+                if (score > 5000 && Math.random() < 0.0009 * deltaTime * Math.sqrt(multiplier)) spawnPowerup();
 
                 score += Math.round(1 * deltaTime * multiplier);
                 difficulty += 0.0005 * deltaTime;
@@ -1056,7 +1060,10 @@
                     enemies = enemies.filter(enemy => {
                         if (enemy.size < 16) {
                             fadedEnemies[enemy.name]++;
-                            pacifist = true;
+                            if (!pacifist) {
+                                achievementFun();
+                                pacifist = true;
+                            }
                             return false;
                         } else {
                             if (enemy.name === "Green" || enemy.name === "Red" ) {
@@ -1229,6 +1236,17 @@
                         playSoundEffect(biteEnemy);
                         playSoundEffect(heartGain);
                         eatenEnemies[enemy.name]++;
+                        if (enemy.size > 22) {
+                            if (!nibbler) {
+                                achievementFun();
+                                nibbler = true;
+                            }
+                            if (enemy.size >= nibblerPrey.size) {
+                                nibblerPrey = {
+                                    size: enemy.size,
+                                    name: enemy.name}
+                            }
+                        }
                         player.hearts++;
                         player.size += 4;
                         player.x = enemy.x - (player.size - enemy.size) / 2;
@@ -1242,7 +1260,10 @@
                             if (document.getElementById('gameOver').style.display === 'block') {
                                 document.getElementById('gameOver').style.display = 'none';
                                 currentPlaybackRate -= 0.6;
-                                backFromTheDead = true;
+                                if (!backFromTheDead) {
+                                    achievementFun();
+                                    backFromTheDead = true;
+                                }
                             }
                         }
                         if (enemy.color === '#F7D358') {
@@ -1280,6 +1301,9 @@
                         player.hearts = hearts_max;
                         player.shield = true;
                         playerWon = true;
+                        if (!loopsCompleted) {
+                            achievementFun();
+                        }
                         loopsCompleted++;
                         if (loopsCompleted > 1) {mark = "You're the GOAT. Respect.";}
                     }
@@ -1580,7 +1604,10 @@
                             if (document.getElementById('gameOver').style.display === 'block') {
                                 document.getElementById('gameOver').style.display = 'none';
                                 currentPlaybackRate -= 0.6;
-                                backFromTheDead = true;
+                                if (!backFromTheDead) {
+                                    achievementFun();
+                                    backFromTheDead = true;
+                                }
                             }
                         }
                     } else if (powerup.type === 'glitch') {
@@ -1594,7 +1621,9 @@
                         enemies = enemies.filter(enemy => {
                             if (enemy.size < 16) {
                                 fadedEnemies[enemy.name]++;
-                                pacifist = true;
+                                if (!pacifist) {
+                                    achievementFun();
+                                    pacifist = true;}
                                 return false;
                             } else {
                                 if (enemy.name === "Green" || enemy.name === "Red" || enemy.name === "Orange") {
@@ -1637,6 +1666,11 @@
                 }
                 return true;
             });
+        }
+
+        function achievementFun() {
+            score += 1000;
+            multiplier += 0.07;
         }
 
         function updateScoreboard() {
@@ -1699,7 +1733,10 @@
 
         function openStats() {
             if (!gamePaused && !gameTOver) {
-                statistician = true;
+                if (!statistician) {
+                    achievementFun();
+                    statistician = true;
+                }
             }
             document.getElementById('totBullets').innerHTML = formatStats(totBullets);
             document.getElementById('hitBullets').innerHTML = formatStats(hitBullets);
@@ -1715,7 +1752,8 @@
             document.getElementById('backFromTheDead').innerHTML = backFromTheDead ? `<span style="color: red;"> Hell yeah!</span>` : `Nope`;
             document.getElementById('shieldsLost').innerHTML = shieldsLost ? `<span style="color: cyan;"> ${shieldsLost}</span>` : `${shieldsLost}`;
 
-            document.getElementById('statistician').innerHTML = statistician ? `<span style="color: #45D191;"> Of course.</span>` : "Nope";
+            document.getElementById('statistician').innerHTML = statistician ? `(Statistician: <span style="color: #45D191;"> Of course.</span>)` : "";
+            document.getElementById('nibbler').innerHTML = nibbler ? `<span style="color: #45D191;"> Burp!</span><span style="color: ${colorMapping[nibblerPrey.name]};"> ${nibblerPrey.size}</span>` : "Nope";
             document.getElementById('pacifist').innerHTML = pacifist ? `<span style="color: #45D191;"> Sure...</span>` : "Nope";
             
             document.getElementById('stats').style.display = 'block';
@@ -2102,6 +2140,10 @@
                 currentPlaybackRate = 1;
                 statistician = false;
                 pacifist = false;
+                nibbler  = false;
+                nibblerPrey = {
+                    size: 0,
+                    name: 'none'}
                 document.getElementById('mark').textContent = 'You should be dead';
                 mark = "You're trash";
     
