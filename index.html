@@ -623,8 +623,8 @@
             { color: '#FF6B6B', name: 'Red', speed: 1, shootRange: 340, shootCooldown: 230, teleport: false, baseBulletSpeed: 2.5, bulletRange: 360, bulletSpread: 0, bulletSize: 10, rapidFire: false, burstFire: true, burstCount: 3, burstDelay: 15, size: 24 },
             { color: '#EF9B3D', name: 'Orange', speed: 0.7, shootRange: 800, minShootRange: 400, shootCooldown: 280, teleport: false, baseBulletSpeed: 8, bulletRange: 1000, bulletSpread: 0, bulletSize: 17, rapidFire: false, burstCount: 1, size: 25 }, //#F1A94E
             { color: '#3A9C97', name: 'Blue', speed: 0.5, shootRange: 450, minShootRange: 100, shootCooldown: 490, teleport: true, baseBulletSpeed: 2.3, bulletRange: 1300, bulletSpread: Math.PI/8, bulletSize: 11, rapidFire: true, wrapBullets: true, burstCount: 2, size: 27 },
-            { color: '#F14E8A', name: 'Pink', speed: 1.25, shootRange: 500, minShootRange: 150, shootCooldown: 1550, teleport: false, baseBulletSpeed: 1.5, bulletRange: 1700, bulletSpread: 2 * Math.PI, bulletSize: 7, rapidFire: false, followPlayer: true, burstCount: 4, size: 29 },
-            { color: '#D694E5', name: 'Purple', speed: 2.2, shootRange: 150, shootCooldown: 1000, teleport: false, baseBulletSpeed: 4.5, bulletRange: 170, bulletSpread: Math.PI/9, bulletSize: 7, rapidFire: false, burstFire: true, burstCount: 90, burstDelay: 7, size: 31 },
+            { color: '#F14E8A', name: 'Pink', speed: 1.25, shootRange: 500, minShootRange: 150, shootCooldown: 1550, teleport: false, baseBulletSpeed: 1.5, bulletRange: 1700, bulletSpread: Math.PI, bulletSize: 8, rapidFire: false, followPlayer: true, burstCount: 4, size: 29 },
+            { color: '#D694E5', name: 'Purple', speed: 2.2, shootRange: 150, shootCooldown: 1000, teleport: false, baseBulletSpeed: 4.5, bulletRange: 170, bulletSpread: Math.PI/9, bulletSize: 8, rapidFire: false, burstFire: true, burstCount: 90, burstDelay: 7, size: 31 },
             { color: '#F7D358', name: 'Yellow', speed: 0.4, spawnRange: 9000, spawnCooldown: 500, teleport: false, spawnSpread: 2 * Math.PI, rapidFire: false, spawnBurstFire: true, spawnBurstCount: 5, spawnBurstDelay: 70, baseSpawnEnemySpeed: 1.1, shootRange: 170, bulletSpread: Math.PI, shootCooldown: 7, baseBulletSpeed: 2.5, bulletRange: 90, bulletSize: 8.5, burstFire: true, burstCount: 10, burstDelay: 2, size: 35 },
             { color: '#47A3FF', name: 'Azure', speed: 1.1, shootRange: 180, shootCooldown: 40, teleport: false, baseBulletSpeed: 2.5, bulletRange: 100, bulletSpread: Math.PI/6, bulletSize: 7, rapidFire: false, burstFire: true, burstCount: 2, burstDelay: 10, size: 18 }
         ];
@@ -1070,7 +1070,7 @@
                                 enemy.size = enemy.size - 3; // || enemy.name === "Orange"
                             } else {
                                 enemy.size = enemy.size - 2;}
-                            if (enemy.bulletSize > 4.5) {
+                            if (enemy.bulletSize > 5.5) {
                                 enemy.bulletSize --;
                             }
                         return true;
@@ -1161,14 +1161,14 @@
                     difficulty2 += 0.15;}
                 if (enemySpawnQueue.length === 46) {
                     currentPlaybackRate += 0.2;
-                    difficulty2 += 0.1;}
+                    difficulty2 += 0.12;}
                 if (enemySpawnQueue.length === 35) {
                     currentPlaybackRate += 0.2;
                     mark = "You're on the way to success.";
-                    difficulty2 += 0.2;}
+                    difficulty2 += 0.23;}
                 if (enemySpawnQueue.length === 15) {
                     currentPlaybackRate += 0.2;
-                    difficulty2 += 0.15;}
+                    difficulty2 += 0.10;}
             }
             if (enemySpawnQueue.length === 0 && mod === 3) {
                 if (!loop) {
@@ -1291,12 +1291,19 @@
                             backgroundMusic = matchMusic;
                             backgroundMusic.play();
                             backgroundMusic.loop = true;
-                            backgroundMusic.currentPlaybackRate = 1;
+                            if (!loopsCompleted) {
+                                currentPlaybackRate -= 2;}
+                            backgroundMusic.currentPlaybackRate = currentPlaybackRate;
                             backgroundMusic.volume = musicVolume;}
-                        else {backgroundMusic.volume = 0;
-                            backgroundMusic = matchMusic;}
+                        else {
+                            backgroundMusic.volume = 0;
+                            backgroundMusic = matchMusic;
+                            if (!loopsCompleted) {
+                                currentPlaybackRate -= 2;}
+                        }
                         mark = "You're amazing. Deserved it.";
                         document.getElementById('hearts').style.width = '30%';
+                        difficulty2 += 0.4;
                         hearts_max = 5;
                         player.hearts = hearts_max;
                         player.shield = true;
@@ -1346,6 +1353,9 @@
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     const angle = Math.atan2(dy, dx);
                     enemy.moveAngle = angle + Math.PI;
+                } else {if (enemy.color === '#F14E8A') {
+                        enemy.moveAngle = Math.random() * Math.PI * 2;
+                    }
                 }
 
                 if (enemy.targetPlayer && enemy.color !== '#F14E8A') {
@@ -1630,7 +1640,7 @@
                                     enemy.size = enemy.size - 3;
                                 } else {
                                     enemy.size = enemy.size - 2;}
-                                if (enemy.bulletSize > 4.5) {
+                                if (enemy.bulletSize > 5.5) {
                                     enemy.bulletSize --;
                                 }
                                 return true;
