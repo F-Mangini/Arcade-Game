@@ -1037,7 +1037,7 @@
                     nextEnemySpawnTime = score + step * Math.sqrt(multiplier) * Math.sqrt(difficulty) / difficulty2;
                     spawnEnemy();
                 }
-                if (score > interval == 0) {
+                if (score > interval) {
                     interval += 100;
                     enemies.forEach(enemy => {
                         enemy.bulletSpeed = enemy.baseBulletSpeed * (1 + (Math.atan((difficulty/90)**2))/1.2);
@@ -1669,7 +1669,7 @@
         }
 
         function achievementFun() {
-            score += 1000;
+            score += 4000;
             multiplier += 0.07;
         }
 
