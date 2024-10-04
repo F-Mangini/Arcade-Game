@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <title>Rogue-like 2D Arcade Game</title>
     <style>
         body {
@@ -228,20 +229,38 @@
         }
         
         .game-title {
-            font-family: 'Press Start 2P', cursive;
+            font-family: 'VT323', monospace; /* Pixel style font */
             font-size: 6vw;
             font-weight: bold;
             text-align: center;
             margin: 20px 0;
-            background: linear-gradient(45deg, #4CAF50, #8BC34A);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            color: white !important; /* Force the text to be white */
+            background: transparent !important; /* Ensure no background is applied */
+            -webkit-background-clip: unset !important; /* Disable background clipping */
+            -webkit-text-fill-color: unset !important; /* Remove any potential fill coloring */
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7); /* Text shadow for 8-bit look */
             transition: transform 0.3s ease;
+
+            /* Disable font smoothing for sharper edges */
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .game-title:hover {
             transform: scale(1.1);
+        }
+
+        .game-title a {
+            color: white !important; /* Ensure link text is white */
+            text-decoration: none; /* Remove the underline from the link */
+        }
+
+        .game-title a:visited {
+            color: white !important; /* Ensure visited links are white */
+        }
+
+        .game-title a:active {
+            color: white !important; /* Ensure active links are white */
         }
 
         .container {
@@ -503,7 +522,7 @@
 </head>
 <body>
     <div class="container" id="container">
-        <div class="game-title"><a id="title" href="https://docs.google.com/document/d/1qBPB0o5j4DLpiHqMHwt4F7pj802QFePzVUUoAW31chw/edit?usp=sharing" target=”_blank”>Infection</a></div> 
+        <div class="game-title"><a id="title" href="https://docs.google.com/document/d/1qBPB0o5j4DLpiHqMHwt4F7pj802QFePzVUUoAW31chw/edit?usp=sharing" target=”_blank”>Re-Think</a></div> 
         <div id="canvas-container">
             <div id="scoreboard">
                 <div id="score"></div>
