@@ -1,6 +1,6 @@
 # Re-Think
 
-![Re-Think Gameplay Screenshot](screenshot.png)
+![Re-Think Gameplay Screenshot](screenshot.PNG)
 
 **Play the game live here:** [https://f-mangini.github.io/Arcade-Game/](https://f-mangini.github.io/Arcade-Game/)
 
