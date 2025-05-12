@@ -6,7 +6,7 @@
 
 ## Developer Note
 
-**Please Note:** This game originated as an experimental project and was never intended to be a fully polished product. As a result, the codebase is quite rushed and may lack optimal structure or comments. It served primarily as a learning exercise and an exploration of game mechanics.
+**Please Note:** This game originated as an experimental project and was never intended to be a fully polished product. As a result, the codebase is quite rushed and may lack optimal structure or comments. It served primarily as a creative and learning exercise, but also as an occasion to test some tools and have fun with friends.
 
 ---
 
